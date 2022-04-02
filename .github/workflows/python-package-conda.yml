@@ -26,7 +26,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get install -y libopenblas-dev
-        conda install -y numpy
+        conda install -y numpy scipy pybind11 cython
     - name: Install cyanure
       run: |
         if ${{matrix.use-openmp == 'true'}}; then
@@ -34,5 +34,5 @@ jobs:
         else
           python setup_cyanure_${{matrix.blas-lib}}_no_openmp.py install
         fi 
-    - name: Test with pytest
-      run: python test.py
+    - name: Run test script
+      run: python test.py --dataset ckn_mnist --solver auto --loss l1 --lambd 0 --penalty l2
