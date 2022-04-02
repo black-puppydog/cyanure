@@ -1,0 +1,38 @@
+name: Python Package using Conda
+
+on: [push]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6]
+        use-openmp : ['true', 'false']
+        blas-lib : ['mkl', 'openblas']
+      max-parallel: 5
+    name: Linux, Python (${{ matrix.python-version }}), OpenBLAS, OpenMP (${{matrix.use_openmp}})
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Add conda to system path
+      run: |
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        echo $CONDA/bin >> $GITHUB_PATH
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y libopenblas-dev
+        conda install -y numpy
+    - name: Install cyanure
+      run: |
+        if ${{matrix.use-openmp == 'true'}}; then
+          python setup_cyanure_${{matrix.blas-lib}}.py install
+        else
+          python setup_cyanure_${{matrix.blas-lib}}_no_openmp.py install
+        fi 
+    - name: Test with pytest
+      run: python test.py
