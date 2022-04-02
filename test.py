@@ -5,18 +5,18 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--dataset");
-parser.add_argument("--penalty");
-parser.add_argument("--solver");
-parser.add_argument("--loss");
-parser.add_argument("--lambd",type=float);
-args=parser.parse_args();
+parser.add_argument("--dataset")
+parser.add_argument("--penalty")
+parser.add_argument("--solver")
+parser.add_argument("--loss")
+parser.add_argument("--lambd",type=float)
+args=parser.parse_args()
 
-dataset=args.dataset;
-penalty=args.penalty;
-solver=args.solver;
-lambd=args.lambd;
-loss=args.loss;
+dataset=args.dataset
+penalty=args.penalty
+solver=args.solver
+lambd=args.lambd
+loss=args.loss
 
 nthreads=4
 datapath='/scratch/clear/mairal/large_datasets/'
